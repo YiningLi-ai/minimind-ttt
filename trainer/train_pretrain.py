@@ -49,7 +49,7 @@ def train_epoch(epoch, wandb):
                 Y.view(-1)
             ).view(Y.size())
             loss = (loss * loss_mask).sum() / loss_mask.sum()
-            loss += res.aux_loss
+            # loss += res.aux_loss
             loss = loss / args.accumulation_steps
 
         scaler.scale(loss).backward()
@@ -82,8 +82,8 @@ def train_epoch(epoch, wandb):
 
         if (step + 1) % args.save_interval == 0 and (not ddp or dist.get_rank() == 0):
             model.eval()
-            moe_path = '_moe' if lm_config.use_moe else ''
-            ckp = f'{args.save_dir}/pretrain_{lm_config.hidden_size}{moe_path}.pth'
+            moe_path = ''
+            ckp = f'/cluster/data7a/lyn/minimind-ttt-master/out/lact--8layer-c64-pretrain_512.pth'
 
             if isinstance(model, torch.nn.parallel.DistributedDataParallel):
                 state_dict = model.module.state_dict()
@@ -169,7 +169,7 @@ if __name__ == "__main__":
 
     if args.use_wandb and (not ddp or ddp_local_rank == 0):
         import wandb
-
+        os.environ["WANDB_MODE"] = "offline"
         wandb.init(project=args.wandb_project, name=args.wandb_run_name)
     else:
         wandb = None
