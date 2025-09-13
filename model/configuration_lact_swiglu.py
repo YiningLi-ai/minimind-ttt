@@ -21,14 +21,14 @@ class LaCTSWIGLUConfig(PretrainedConfig):
 
     def __init__(
         self,
-        hidden_size: int = 2048,
-        num_hidden_layers: int = 24,
-        num_attn_heads: int = 32,
+        hidden_size: int = 512,
+        num_hidden_layers: int = 8,
+        num_attn_heads: int = 8,
         num_lact_heads: int = 4,
         inter_multi: int = 1,
         qkv_bias: bool = False,
         attn_qk_norm: bool = False,
-        lact_chunk_size: int = 2048,
+        lact_chunk_size: int = 256,
         use_muon: bool = False,
         lr_dim: int = 1,
         qkv_silu: bool = True,
@@ -41,9 +41,9 @@ class LaCTSWIGLUConfig(PretrainedConfig):
         # postnorm ttt:  state = norm(state + f(state)
         ttt_nope: bool = False, # if True, no positional encoding for query and key used in ttt.  
         w0_w2_low_rank: int = -1, # -1 means fully learnable.  > 1 means low rank parameterization of the initial learnable weights. 
-        window_size: int = 2048,
-        rope_theta: Optional[float] = 10000.,
-        max_position_embeddings: int = 2048,
+        window_size: int = 256,
+        rope_theta: Optional[float] = 1000000.,
+        max_position_embeddings: int = 32768,
         hidden_ratio: Optional[int] = 4,
         intermediate_size: Optional[int] = None,
         hidden_act: str = "swish",
@@ -59,7 +59,7 @@ class LaCTSWIGLUConfig(PretrainedConfig):
         last_layer_fuse_norm: bool = True,
         fuse_swiglu: bool = True,
         fuse_cross_entropy: bool = True,
-        vocab_size: int = 32000,
+        vocab_size: int = 6400,
         fw_init_gain: float = 0.5,
         **kwargs,
     ):
