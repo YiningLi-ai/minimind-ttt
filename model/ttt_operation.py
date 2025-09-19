@@ -206,6 +206,8 @@ def block_causal_lact_swiglu(
     e_index = seq_len
 
     qi = q[:, :, s_index:e_index]
+    ki = k[:, :, s_index:e_index]
+    qi = (qi + ki)/2
     # use the last w0 and w1 to get the final output
     # [b, dh, dk] @ [b, dk, l] -> [b, dh, l]
     h = torch.bmm(w2, qi)
